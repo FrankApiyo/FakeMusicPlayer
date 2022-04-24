@@ -1,96 +1,57 @@
-import React from 'react';
-import {Text, StyleSheet, View, Image, ImageBackground} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet, View, Text, Image, TouchableHighlight} from 'react-native';
 
-const playIcon = require('./Images/play.png');
-const volumeIcon = require('./Images/sound.png');
-const hdIcon = require('./Images/hd-sign.png');
-const fullScreenIcon = require('./Images/full-screen.png');
-const flower = require('./Images/flower.jpg');
-const remoteImage = {
-  uri: 'https://farm5.staticflickr.com/4702/24825836327_bb2e0fc39b_b.jpg',
-};
+const heartIcon = require('./images/heart.png');
 
-const styles = StyleSheet.create({
-  flower: {
-    flex: 1,
-  },
-  appContainer: {
-    flex: 1,
-    justifyContent: 'center',
+const stylesheet = StyleSheet.create({
+  container: {
+    paddingTop: 50,
     alignItems: 'center',
-    borderWidth: 1,
-    padding: 0,
+    backgroundColor: '#555',
+    height: '100%',
   },
-  videoContainer: {
-    backgroundColor: '#000',
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    marginLeft: 0,
-    width: '100%',
-  },
-  controlsContainer: {
+  button: {
+    borderRadius: 5,
     padding: 10,
-    backgroundColor: '#202020',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 300,
-    width: '100%',
-    flex: 1,
-    borderWidth: 2,
-    display: 'flex',
   },
   icon: {
-    tintColor: 'powderblue',
-    height: 16,
-    width: 16,
-    marginRight: 5,
-    flex: 1,
-    flexGrow: 0.5,
-    borderWidth: 2,
-    marginLeft: 5,
+    width: 180,
+    height: 180,
+    tintColor: '#ffffff',
   },
-  progress: {
-    backgroundColor: '#000',
-    borderRadius: 7,
-    flex: 15,
-    flexBasis: 10,
-    display: 'flex',
-    borderWidth: 2,
+  liked: {
+    tintColor: '#e74c3c',
   },
-  progressBar: {
-    backgroundColor: '#bf161c',
-    borderRadius: 5,
-    height: 10,
-    margin: 2,
-    paddingTop: 3,
-    width: '50%',
-    borderWidth: 2,
-    alignItems: 'center',
-    flexDirection: 'row',
+  text: {
+    marginTop: 20,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
-export default class App extends React.Component {
-  render() {
+
+export default class App extends Component {
+  state = {
+    liked: false,
+  };
+
+  handleButtonPressed = () => {
+    this.setState({
+      liked: !this.state.liked,
+    });
+  };
+
+  render = () => {
+    const likedStyles = this.state.liked ? stylesheet.liked : undefined;
     return (
-      <View style={styles.appContainer}>
-        <ImageBackground
-          source={remoteImage}
-          style={styles.videoContainer}
-          resizeMode="contain">
-          <View style={styles.controlsContainer}>
-            <Image source={volumeIcon} style={styles.icon} />
-            <View style={styles.progress}>
-              <View style={styles.progressBar} />
-            </View>
-            <Image source={hdIcon} style={styles.icon} />
-            <Image source={fullScreenIcon} style={styles.icon} />
-          </View>
-        </ImageBackground>
+      <View style={stylesheet.container}>
+        <TouchableHighlight
+          onPress={this.handleButtonPressed}
+          styles={stylesheet.button}
+          underlayColor="#555">
+          <Image source={heartIcon} style={[stylesheet.icon, likedStyles]} />
+        </TouchableHighlight>
+        <Text style={stylesheet.text}>Do you like this app?</Text>
       </View>
     );
-  }
+  };
 }
